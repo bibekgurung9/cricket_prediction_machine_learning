@@ -12,10 +12,12 @@ import jwtConfig from './config/jwt.config';
 import refreshJwtConfig from './config/refresh-jwt.config';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
+import { Match } from 'src/entities/matches.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Match]),
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
     ConfigModule.forFeature(refreshJwtConfig),

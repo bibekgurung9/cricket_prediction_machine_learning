@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./user.entity";
 
-@Entity('matches')
-export class MatchEntity {
+@Entity()
+export class Match {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -38,9 +39,12 @@ export class MatchEntity {
     @Column({ type: 'float' })
     team2WinProbability: number;
 
-    @Column({ type: 'boolean', default: null, nullable: true })
-    result: boolean | null; 
-
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     matchDate: Date;
+
+    @Column({ type: 'boolean', default: false })
+    isPrediction: boolean;
+
+    @ManyToOne(() => User, (user) => user.matches)
+    user: User
 }

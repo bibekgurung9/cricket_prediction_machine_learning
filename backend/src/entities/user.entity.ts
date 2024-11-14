@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm";
+import { Match } from "./matches.entity";
 
 @Entity()
-export class User {
+export class  User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,9 +21,9 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
-  password: string;
-
   @Column({ nullable: true })
   hashedRefreshToken: string;
+
+  @OneToMany(() => Match, (match) => match.user)
+  matches: Match[]
 }
