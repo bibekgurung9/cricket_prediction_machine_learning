@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { fetchUserData } from "@/actions/profile"; 
+import { fetchUserData } from "@/actions/profile";
 import Cookies from "js-cookie";
 
 export function UserButton() {
@@ -22,14 +22,14 @@ export function UserButton() {
         .then((data) => {
           setUserData({
             name: `${data.firstName} ${data.lastName}`,
-            profileImage: data.avatarUrl || DefaultUser, 
+            profileImage: data.avatarUrl || DefaultUser,
           });
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
         })
         .finally(() => {
-          setLoading(false); 
+          setLoading(false);
         });
     } else {
       setLoading(false);
@@ -46,15 +46,15 @@ export function UserButton() {
 
   if (!userData) {
     return (
-      <Link href="/auth/login" className="text-xl font-semibold leading-6 text-gray-900 dark:text-white hover:opacity-80">
+      <Link href="/auth/login" className="text-xl font-semibold leading-6 text-white hover:opacity-80">
         Log in <span aria-hidden="true">&rarr;</span>
       </Link>
     );
   }
 
   return (
-    <div className="relative inline-block text-left">
-      <button onClick={toggleDropdown} className="flex items-center space-x-2">
+    <div className="w-full relative inline-block text-left text-white">
+      <button onClick={toggleDropdown} className="flex items-center space-x-2 w-full justify-start">
         <Image
           src={userData.profileImage}
           alt={`${userData.name}'s profile`}
@@ -83,5 +83,6 @@ export function UserButton() {
         </div>
       )}
     </div>
+
   );
 }
