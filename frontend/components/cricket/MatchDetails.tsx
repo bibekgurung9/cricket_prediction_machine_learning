@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PredictMatchType } from '@/constants/interfaces';
 import { getMatchData } from '@/actions/predict-match/get-match';
+import { updatePrediction } from '@/actions/predict-match/update-match';  // Add the update prediction action
 import Cookies from 'js-cookie';
 import { fetchUserData } from '@/actions/profile';
 import { deleteMatchData } from '@/actions/predict-match/delete-match';
+import UpdatePrediction from './UpdatePrediction';
 
 interface MatchDetailsProps {
   matchId: string;
@@ -16,6 +18,7 @@ const MatchDetails = ({ matchId }: MatchDetailsProps) => {
   const [matchData, setMatchData] = useState<PredictMatchType | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -50,6 +53,10 @@ const MatchDetails = ({ matchId }: MatchDetailsProps) => {
   };
 
   const handleMakeAnotherPrediction = () => router.push("/predict-match");
+
+  const handleUpdatePrediction = () => {
+    setShowUpdateForm(true);
+  };
 
   if (message) {
     return <p className="text-center text-lg">{message}</p>;
@@ -96,7 +103,15 @@ const MatchDetails = ({ matchId }: MatchDetailsProps) => {
         >
           Make Another Prediction
         </button>
+        <button
+          onClick={handleUpdatePrediction}
+          className="w-full sm:w-1/2 py-3 mt-4 sm:mt-0 ml-0 sm:ml-2 text-white bg-yellow-600 rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        >
+          Update Prediction
+        </button>
       </div>
+
+      {showUpdateForm && <UpdatePrediction matchId={matchId} />}
     </div>
   );
 };

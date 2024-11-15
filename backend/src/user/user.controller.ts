@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guard/jwt-guard.guard';
@@ -7,6 +7,7 @@ import { PredictMatchDto } from './dto/predict-match.dto';
 import { Team } from 'src/common/enums/team.enum';
 import { City } from 'src/common/enums/city.enum';
 import { SaveMatchDto } from './dto/save-match.dto';
+import { UpdateMatchDto } from './dto/update-match-dto';
 
 @Controller('user')
 export class UserController {
@@ -91,6 +92,20 @@ export class UserController {
   ): Promise<any> {
     try {
       return await this.userService.saveUserPrediction(userId, saveMatchDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/update-prediction/:userId/:matchId')
+  async updateUserPrediction(
+    @Param('userId') userId: number,
+    @Param('matchId') matchId: number,
+    @Body() updateMatchDto: UpdateMatchDto,  
+  ): Promise<any> {
+    try {
+      return await this.userService.updateUserPrediction(userId, matchId, updateMatchDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

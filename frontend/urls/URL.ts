@@ -9,3 +9,4 @@ export const getCurrentMatchUrl = backendUrl + "/user/get-match";
 export const deleteCurrentMatchUrl = backendUrl + "/user/delete-match";
 export const predictMatchUrl = backendUrl + "/user/predict-match";
 export const savePredictionhUrl = backendUrl + "/user/save-prediction";
+export const updateCurrentMatchUrl = backendUrl + "/user/update-prediction";

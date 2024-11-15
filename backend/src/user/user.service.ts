@@ -150,4 +150,39 @@ export class UserService {
       return { success: false, message: "Failed to delete match. Please try again later." };
     }
   }
+  async updateUserPrediction(
+    userId: number,
+    matchId: number,
+    updateMatchData: Partial<Match>, // Partial because not all fields need to be updated
+  ): Promise<any> {
+    // First, fetch the user and ensure they exist
+    const user = await this.UserRepo.findOne({
+      where: { id: userId },
+      relations: ['matches'], // Load related matches
+    });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    // Find the match by userId and matchId
+    const matchToUpdate = await this.MatchRepo.findOne({
+      where: { id: matchId, user: { id: userId } },
+    });
+
+    if (!matchToUpdate) {
+      throw new BadRequestException('Match prediction not found');
+    }
+
+    // Update the match with the new data
+    const updatedMatch = Object.assign(matchToUpdate, updateMatchData); // Merge the new data into the existing match entity
+
+    // Save the updated match back to the database
+    const savedUpdatedMatch = await this.MatchRepo.save(updatedMatch);
+
+    return {
+      message: 'Match prediction updated successfully!',
+      matchData: savedUpdatedMatch,
+    };
+  }
 }
